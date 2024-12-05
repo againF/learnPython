@@ -1,4 +1,5 @@
 from datetime import datetime
+import csv
 def show_menu():
     print("\n简单记事本")
     print("1. 添加新笔记")
@@ -6,6 +7,7 @@ def show_menu():
     print("3. 删除所有笔记")
     print("4. 搜索笔记")
     print("5. 删除指定笔记")
+    print("6. 导出笔记到CSV")
     print("0. 退出程序")
 def add_note():
     note = input("请输入新的笔记内容: ")
@@ -18,7 +20,7 @@ def add_note():
     except FileNotFoundError:
         note_id = 1
     with open('notes.txt', 'a') as file:
-        file.write(f"{note_id}.[{timestamp}] [{category}] {note}\n")
+        file.write(f"[{note_id}] .[{timestamp}] [{category}] {note}\n")
     print(f"笔记已成功添加.(编号{note_id},类别{category})")
 def view_all_notes():
     try:
@@ -69,11 +71,35 @@ def search_notes():
                 print("未找到匹配的笔记.")
     except FileNotFoundError:
         print("文件不存在.")
+def export_notes_to_csv():
+    try:
+        with open('notes.txt','r') as file:
+           notes = file.readlines()
+           if not notes:
+               print("没有任何笔记.")
+               return
+        with open("notes_export.csv","w",newline='',encoding='utf-8-sig') as csvfile:
+           writer = csv.writer(csvfile)
+           writer.writerow(["ID","时间","类别","内容"])
+           for note in notes:
+               parts = note.strip().split('] ')
+               note_id = parts[0].strip('.').strip('[')
+               timestamp = parts[1].strip('.').strip('[')
+               category = parts[2].strip('[')
+               content = parts[3]
+               writer.writerow([note_id,timestamp,category,content])
+        print("笔记已成功导出到notes_export.csv文件.")
+    except FileNotFoundError:
+        print("没有任何笔记.")
+
+
+
+
 
 def main():
     while True:
         show_menu()
-        choice = input("\n请选择操作 (0/1/2/3/4/5): ")
+        choice = input("\n请选择操作 (0/1/2/3/4/5/6): ")
         if choice == '1':
             add_note()
         elif choice == '2':
@@ -84,6 +110,8 @@ def main():
             search_notes()
         elif choice == '5':
             delete_note_by_id()
+        elif choice == '6':
+            export_notes_to_csv()
         elif choice == '0':
             break
         else:

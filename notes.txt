@@ -1,3 +1,2 @@
-[2024-11-02 16:41:33] alan's first hello world py.
-[2024-11-02 16:42:13] what if I want to write in many lines
-3.[2024-12-05 15:49:35] [test] 123
+[1] .[2024-12-05 16:26:41] [test] 1
+[2] .[2024-12-05 16:26:48] [test] 2
