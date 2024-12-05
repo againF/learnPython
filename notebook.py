@@ -9,6 +9,7 @@ def show_menu():
     print("0. 退出程序")
 def add_note():
     note = input("请输入新的笔记内容: ")
+    category = input("请输入笔记类别（例如：工作、生活、学习）： ")
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         with open('notes.txt','r') as file:
@@ -17,8 +18,8 @@ def add_note():
     except FileNotFoundError:
         note_id = 1
     with open('notes.txt', 'a') as file:
-        file.write(f"{note_id}.[{timestamp}] {note}\n")
-    print(f"笔记已成功添加.(编号{note_id})")
+        file.write(f"{note_id}.[{timestamp}] [{category}] {note}\n")
+    print(f"笔记已成功添加.(编号{note_id},类别{category})")
 def view_all_notes():
     try:
        with open('notes.txt','r') as file:
