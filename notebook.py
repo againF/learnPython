@@ -10,6 +10,7 @@ def show_menu():
     print("6. 导出笔记到CSV")
     print("7. 导入笔记从CSV")
     print("8. 分页查看笔记")
+    print("9. 显示统计信息")
     print("0. 退出程序")
 def add_note():
     note = input("请输入新的笔记内容: ")
@@ -142,6 +143,27 @@ def view_notes_paginated(page_size=5):
     except FileNotFoundError:
         print("文件不存在.")
 
+def show_statistics():
+    try:
+        with open('notes.txt','r') as file:
+            notes = file.readlines()
+            if not notes:
+                print("没有任何笔记.")
+                return
+            total_notes = len(notes)
+            category_counts = {}
+            for note in notes:
+                parts = note.strip().split('] ')
+                category = parts[2].strip('[')
+                category_counts[category] = category_counts.get(category, 0) + 1
+            print(f"\n笔记总数: {total_notes}")
+            print("按类别分布:")
+            for category, count in category_counts.items():
+                print(f"- {category}: {count}")
+    except FileNotFoundError:
+        print("文件不存在.")
+
+
 
 
 
@@ -167,6 +189,8 @@ def main():
             import_notes_from_csv()
         elif choice == '8':
             view_notes_paginated()
+        elif choice == '9':
+            show_statistics()
         elif choice == '0':
             break
         else:
