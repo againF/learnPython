@@ -9,6 +9,7 @@ def show_menu():
     print("5. 删除指定笔记")
     print("6. 导出笔记到CSV")
     print("7. 导入笔记从CSV")
+    print("8. 分页查看笔记")
     print("0. 退出程序")
 def add_note():
     note = input("请输入新的笔记内容: ")
@@ -109,6 +110,40 @@ def import_notes_from_csv():
     except FileNotFoundError:
         print("文件不存在.")
 
+def view_notes_paginated(page_size=5):
+    try:
+        with open('notes.txt','r') as file:
+            notes = file.readlines()
+            total_notes = len(notes)
+            if total_notes == 0:
+                print("没有任何笔记.")
+                return
+            total_pages = (total_notes + page_size - 1) // page_size
+            page = 1
+            while True:
+                start = (page - 1) * page_size
+                end = start + page_size
+                print(f"\n第 {page}/{total_pages} 页：")
+                for note in notes[start:end]:
+                    print('-'+ note.strip())
+                if page < total_pages:
+                    next_choice = input("\n下一页(N), 上一页(P), 退出(E): ").upper()
+                    if next_choice == 'N':
+                        page += 1
+                    elif next_choice == 'P':
+                        page -= 1
+                    elif next_choice == 'E':
+                        break
+                    else:
+                        print("无效的选项, 请重新选择.")
+                else:
+                    print("已经是最后一页.")
+                    break
+    except FileNotFoundError:
+        print("文件不存在.")
+
+
+
 
 
 
@@ -130,6 +165,8 @@ def main():
             export_notes_to_csv()
         elif choice == '7':
             import_notes_from_csv()
+        elif choice == '8':
+            view_notes_paginated()
         elif choice == '0':
             break
         else:
