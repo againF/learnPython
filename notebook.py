@@ -8,6 +8,7 @@ def show_menu():
     print("4. 搜索笔记")
     print("5. 删除指定笔记")
     print("6. 导出笔记到CSV")
+    print("7. 导入笔记从CSV")
     print("0. 退出程序")
 def add_note():
     note = input("请输入新的笔记内容: ")
@@ -92,6 +93,21 @@ def export_notes_to_csv():
     except FileNotFoundError:
         print("没有任何笔记.")
 
+def import_notes_from_csv():
+    try:
+        with open('notes_import.csv',"r",encoding='utf-8-sig') as csvfile:
+           reader = csv.reader(csvfile)
+           next(reader) # 跳过标题行
+           with open('notes.txt','a',encoding='utf-8') as file:
+               for row in reader:
+                   note_id = row[0]
+                   timestamp = row[1]
+                   category = row[2]
+                   content = row[3]
+                   file.write(f"[{note_id}] .[{timestamp}] [{category}] {content}\n")
+        print("笔记已成功导入.")
+    except FileNotFoundError:
+        print("文件不存在.")
 
 
 
@@ -99,7 +115,7 @@ def export_notes_to_csv():
 def main():
     while True:
         show_menu()
-        choice = input("\n请选择操作 (0/1/2/3/4/5/6): ")
+        choice = input("\n请选择操作: ")
         if choice == '1':
             add_note()
         elif choice == '2':
@@ -112,6 +128,8 @@ def main():
             delete_note_by_id()
         elif choice == '6':
             export_notes_to_csv()
+        elif choice == '7':
+            import_notes_from_csv()
         elif choice == '0':
             break
         else:
