@@ -9,7 +9,19 @@ class Book:
         print("Price:",self.price)
     def update_price(self,new_price):
         self.price=new_price
-book1 = Book("Python Programming","John Smith",29.99)
-book1.display_info()
-book1.update_price(39.99)
-book1.display_info()
+
+# book1 = Book("Python Programming","John Smith",29.99)
+# book1.display_info()
+# book1.update_price(39.99)
+# book1.display_info()
+
+class EBook(Book):
+    def __init__(self,title,author,price,file_size):
+        super().__init__(title,author,price)
+        self.file_size=file_size
+    def display_info(self):
+        super().display_info()
+        print("File Size:",self.file_size,"MB")
+
+ebook1 = EBook("Python Programming","John Smith",29.99,10)
+ebook1.display_info()
